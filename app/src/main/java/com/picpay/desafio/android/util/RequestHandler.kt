@@ -1,6 +1,6 @@
 package com.picpay.desafio.android.util
 
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -11,8 +11,8 @@ sealed class RequestHandler<out T> {
     object NetworkError: RequestHandler<Nothing>()
 }
 
-suspend fun <T> call(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): RequestHandler<T> {
-    return withContext(dispatcher) {
+suspend fun <T> call(apiCall: suspend () -> T): RequestHandler<T> {
+    return withContext(Dispatchers.IO) {
         try {
             RequestHandler.Success(apiCall.invoke())
         } catch (throwable: Throwable) {
