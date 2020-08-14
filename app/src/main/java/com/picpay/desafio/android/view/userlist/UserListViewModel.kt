@@ -1,22 +1,20 @@
 package com.picpay.desafio.android.view.userlist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.picpay.desafio.android.data.PicPayService
+import androidx.lifecycle.*
 import com.picpay.desafio.android.model.User
+import com.picpay.desafio.android.repository.PicPayRepository
+import com.picpay.desafio.android.util.RequestHandler
 import kotlinx.coroutines.launch
 
-class UserListViewModel(private val service: PicPayService) : ViewModel() {
+class UserListViewModel(private val repository: PicPayRepository) : ViewModel() {
 
-    private val _liveData = MutableLiveData<List<User>>()
-    val liveData: LiveData<List<User>>
-        get() = _liveData
+    private val _userList = MutableLiveData<RequestHandler<List<User>>>()
+    val userList: LiveData<RequestHandler<List<User>>>
+        get() = _userList
 
     fun getUsers() {
         viewModelScope.launch {
-            _liveData.value = service.getUsers()
+            _userList.value = repository.getUsers()
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.picpay.desafio.android.di
 
 import com.picpay.desafio.android.data.PicPayService
+import com.picpay.desafio.android.repository.PicPayRepository
+import com.picpay.desafio.android.repository.PicPayRepositoryImpl
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,5 +24,7 @@ object ServiceModule {
         }
 
         single<PicPayService> { get<Retrofit>().create(PicPayService::class.java) }
+
+        single<PicPayRepository> { PicPayRepositoryImpl(get()) }
     }
 }
